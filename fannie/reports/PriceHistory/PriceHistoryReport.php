@@ -21,7 +21,7 @@
 
 *********************************************************************************/
 
-include('../../config.php');
+include(dirname(__FILE__) . '/../../config.php');
 if (!class_exists('FannieAPI')) {
     include($FANNIE_ROOT.'classlib2.0/FannieAPI.php');
 }
@@ -112,9 +112,9 @@ class PriceHistoryReport extends FannieReportPage
                 $args = array('%'.$manu.'%',$start_date.' 00:00:00',$end_date.' 23:59:59');
             } else {
                 $q = "select p.upc,b.description,p.price,p.modified,b.normal_price
-                    from prodPriceHistory as p left join prodExtra as x
+                    from prodPriceHistory as p left join products as x
                     on p.upc = x.upc left join products as b on
-                    p.upc=b.upc where x.manufacturer ? and
+                    p.upc=b.upc where x.brand ? and
                     p.modified between ? AND ?
                     order by p.upc,p.modified";
                     $args = array($manu,$start_date.' 00:00:00',$end_date.' 23:59:59');
@@ -204,33 +204,33 @@ Department End: <input type=text id=dept2 size=4 name=dept2 />
         ob_start();
         ?>
 function showUPC(){
-	$('#radioU').attr('checked',true);
-	document.getElementById('upcfields').style.display='block';
-	document.getElementById('departmentfields').style.display='none';
-	document.getElementById('manufacturerfields').style.display='none';
+    $('#radioU').attr('checked',true);
+    document.getElementById('upcfields').style.display='block';
+    document.getElementById('departmentfields').style.display='none';
+    document.getElementById('manufacturerfields').style.display='none';
 }
 function showDept(){
-	$('#radioD').attr('checked',true);
-	document.getElementById('upcfields').style.display='none';
-	document.getElementById('departmentfields').style.display='block';
-	document.getElementById('manufacturerfields').style.display='none';
+    $('#radioD').attr('checked',true);
+    document.getElementById('upcfields').style.display='none';
+    document.getElementById('departmentfields').style.display='block';
+    document.getElementById('manufacturerfields').style.display='none';
 }
 function showManu(){
-	$('#radioM').attr('checked',true);
-	document.getElementById('upcfields').style.display='none';
-	document.getElementById('departmentfields').style.display='none';
-	document.getElementById('manufacturerfields').style.display='block';
+    $('#radioM').attr('checked',true);
+    document.getElementById('upcfields').style.display='none';
+    document.getElementById('departmentfields').style.display='none';
+    document.getElementById('manufacturerfields').style.display='block';
 }
 $(document).ready(function(){
-	showUPC();
-	$('#date1').click(function(){showCalendarControl(this);});
-	$('#date2').click(function(){showCalendarControl(this);});
-	$('#d1s').change(function(){
-		$('#dept1').val($('#d1s').val());
-	});
-	$('#d2s').change(function(){
-		$('#dept2').val($('#d2s').val());
-	});
+    showUPC();
+    $('#date1').datepicker();
+    $('#date2').datepicker();
+    $('#d1s').change(function(){
+        $('#dept1').val($('#d1s').val());
+    });
+    $('#d2s').change(function(){
+        $('#dept2').val($('#d2s').val());
+    });
 });
         <?php
         return ob_get_clean();
@@ -242,10 +242,10 @@ $(document).ready(function(){
         ?>
 <style type=text/css>
 #departmentfields{
-	display:none;
+    display:none;
 }
 #manufacturerfields{
-	display:none;
+    display:none;
 }
         <?php
         return ob_get_clean();

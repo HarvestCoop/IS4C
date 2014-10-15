@@ -24,11 +24,11 @@
 
 /* --COMMENTS - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-	* 21Jan2013 Eric Lee table upcLike need database specified: core_op.upcLike
+    * 21Jan2013 Eric Lee table upcLike need database specified: core_op.upcLike
 
 */
 
-require('../../config.php');
+include(dirname(__FILE__) . '/../../config.php');
 if (!class_exists('FannieAPI')) {
     include($FANNIE_ROOT.'classlib2.0/FannieAPI.php');
 }

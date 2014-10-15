@@ -21,7 +21,7 @@
 
 *********************************************************************************/
 
-include('../../config.php');
+include(dirname(__FILE__) . '/../../config.php');
 if (!class_exists('FannieAPI')) {
     include($FANNIE_ROOT.'classlib2.0/FannieAPI.php');
 }
@@ -39,12 +39,12 @@ class PatronageReport extends FannieReportPage
 
     protected $report_headers = array('#', 'Gross Purchases', 'Discounts', 'Rewards', 'Net Purchases', 'Cash Portion', 'Equity Portion', 'Total Rebate');
 
-	public function preprocess()
+    public function preprocess()
     {
         $this->formatCheck();
 
-		return true;
-	}
+        return true;
+    }
 
     public function form_content()
     {

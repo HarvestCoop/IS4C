@@ -38,6 +38,12 @@ class FanniePage
     Base class for creating HTML pages.
     ";
 
+    public $discoverable = true;
+
+    public $page_set = 'Misc';
+
+    public $doc_link = '';
+
     /** force users to login immediately */
     protected $must_authenticate = False;
     /** name of the logged in user (or False is no one is logged in) */
@@ -63,6 +69,8 @@ class FanniePage
         if (isset($FANNIE_COOP_ID) && $FANNIE_COOP_ID == 'WEFC_Toronto') {
             $this->auth_classes[] = 'admin';
         }
+        /*
+        */
     }
 
     /**
@@ -93,6 +101,10 @@ class FanniePage
 
         return ob_get_clean();
     }
+    public function get_header()
+    {
+        return $this->getHeader();
+    }
 
     /**
       Get the standard footer
@@ -105,6 +117,10 @@ class FanniePage
         include($FANNIE_ROOT.'src/footer.html');
 
         return ob_get_clean();
+    }
+    public function get_footer()
+    {
+        return $this->getFooter();
     }
 
     /**
@@ -216,6 +232,11 @@ class FanniePage
         header('Location: '.$url.'?redirect='.$redirect);
     }
 
+    public function login_redirect()
+    {
+        $this->loginRedirect();
+    }
+
     /**
       Check if the user is logged in
     */
@@ -240,6 +261,11 @@ class FanniePage
         }
 
         return False;
+    }
+
+    public function check_auth()
+    {
+        return $this->checkAuth();
     }
 
     public function draw_page()
@@ -333,16 +359,21 @@ class FanniePage
             }
             
             if ($this->readinessCheck() !== false) {
-                echo $this->bodyContent();
+                $body = $this->bodyContent();
             } else {
-                echo $this->errorContent();
+                $body = $this->errorContent();
             }
 
             if ($this->window_dressing) {
+                echo $body;
                 $footer = $this->getFooter();
                 $footer = str_ireplace('</html>','',$footer);
                 $footer = str_ireplace('</body>','',$footer);
                 echo $footer;
+            } else {
+                $body = str_ireplace('</html>','',$body);
+                $body = str_ireplace('</body>','',$body);
+                echo $body;
             }
 
             foreach($this->scripts as $s_url => $s_type) {
@@ -368,7 +399,6 @@ class FanniePage
                 echo "\n";
             }
             
-            // 22May13 Eric Lee  Moved after css_files so these take precedence.
             $page_css = $this->css_content();
             if (!empty($page_css)) {
                 echo '<style type="text/css">';
@@ -376,9 +406,7 @@ class FanniePage
                 echo '</style>';
             }
 
-            if ($this->window_dressing) {
-                echo '</body></html>';
-            }
+            echo '</body></html>';
         }
     }
 }
